@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block title %}Executive Reporting Suite – SmartBiz AI{% endblock %}
+
+{% block content %}
+{% if print_mode %}
+<!-- Standalone Print View Layout -->
+<div class="p-5 bg-white text-dark">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
+        <div>
+            <h1 class="fw-bold text-primary mb-1">{{ current_user.business_name }} - Executive Summary</h1>
+            <p class="text-muted mb-0">Generated on {{ datetime.utcnow().strftime('%B %d, %Y') }} | Powered by SmartBiz AI</p>
+        </div>
+        <button class="btn btn-primary no-print" onclick="window.print()"><i class="fas fa-print me-2"></i> Print Now</button>
+    </div>
+    
+    <!-- Print KPIs -->
+    <div class="row g-3 mb-5">
+        <div class="col-4"><div class="p-3 border rounded bg-light"><strong>Total Revenue:</strong> <span class="fs-4 d-block text-primary">${{ total_rev:,.2f }}</span></div></div>
+        <div class="col-4"><div class="p-3 border rounded bg-light"><strong>Net Profit:</strong> <span class="fs-4 d-block text-success">${{ total_prof:,.2f }}</span></div></div>
+        <div class="col-4"><div class="p-3 border rounded bg-light"><strong>Profit Margin:</strong> <span class="fs-4 d-block text-info">{{ margin }}%</span></div></div>
+    </div>
+    
+    <h3 class="fw-bold mb-3">1. Recent Sales Ledger</h3>
+    <table class="table table-bordered table-sm mb-5">
+        <thead class="table-light"><tr><th>Invoice</th><th>Customer</th><th>Product</th><th>Qty</th><th class="text-end">Amount ($)</th></tr></thead>
+        <tbody>
+            {% for s in sales %}
+            <tr><td>{{ s.invoice_no }}</td><td>{{ s.customer.name if s.customer else 'Guest' }}</td><td>{{ s.product.name if s.product else 'Item' }}</td><td class="text-center">{{ s.quantity }}</td><td class="text-end">${{ s.total_amount:,.2f }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<!-- Standard Interactive Report Generator -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+    <div>
+        <h2 class="fw-bold mb-1">Executive Reporting Suite</h2>
+        <p class="text-secondary mb-0" style="font-size:0.9rem;">Generate audit-ready PDF executive summaries, export CSV spreadsheets, and review historical briefs.</p>
+    </div>
+    <div class="d-flex gap-3">
+        <a href="{{ url_for('reports.print_view') }}" target="_blank" class="btn btn-outline-primary">
+            <i class="fas fa-print me-2"></i> Printable View
+        </a>
+        <a href="{{ url_for('reports.generate_csv') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-file-csv me-2"></i> Export Financial CSV
+        </a>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <!-- Report Builder Form Card -->
+    <div class="col-lg-7">
+        <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="kpi-icon mb-0" style="width:42px;height:42px;font-size:1.2rem;"><i class="fas fa-file-pdf"></i></div>
+                    <h4 class="fw-bold mb-0">Generate Branded PDF Report</h4>
+                </div>
+                <p class="text-secondary mb-4" style="font-size:0.95rem;">
+                    Our automated FPDF2 engine compiles your live revenue ledgers, top product leaderboards, and Google Gemini AI strategy recommendations into a presentation-ready executive document.
+                </p>
+                <form method="POST" action="{{ url_for('reports.generate_pdf') }}">
+                    <div class="mb-4">
+                        <label class="form-label fw-600 text-secondary">Report Document Title</label>
+                        <input type="text" name="title" class="form-control form-control-lg bg-light" value="Executive Business Report - {{ datetime.utcnow().strftime('%B %Y') }}" required>
+                    </div>
+                    
+                    <div class="p-3 rounded bg-light border mb-4">
+                        <h6 class="fw-bold text-primary mb-2"><i class="fas fa-check-double me-2"></i>Report Included Sections:</h6>
+                        <div class="row g-2 text-secondary" style="font-size:0.85rem;">
+                            <div class="col-6"><i class="fas fa-check text-success me-1"></i> Executive KPI Summary Table</div>
+                            <div class="col-6"><i class="fas fa-check text-success me-1"></i> Top 5 Selling Products Leaderboard</div>
+                            <div class="col-6"><i class="fas fa-check text-success me-1"></i> Google Gemini AI Strategy Insights</div>
+                            <div class="col-6"><i class="fas fa-check text-success me-1"></i> Inventory Health & Risk Brief</div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-premium w-100 py-3 justify-content-center fs-5 shadow-lg">
+                        <i class="fas fa-download me-2"></i> Generate & Download PDF Report
+                    </button>
+                </form>
+            </div>
+            <div class="mt-3 pt-3 border-top text-muted d-flex justify-content-between align-items-center" style="font-size:0.8rem;">
+                <span><i class="fas fa-lock text-success me-1"></i> 256-bit Encrypted Export</span>
+                <span>Format: PDF / A4 Printable</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Executive Summary Preview Card -->
+    <div class="col-lg-5">
+        <div class="glass-card p-4 h-100 bg-light bg-opacity-50">
+            <h5 class="fw-bold mb-3"><i class="fas fa-eye text-primary me-2"></i>Live Executive Brief Preview</h5>
+            <div class="p-4 rounded-3 bg-white shadow-sm border mb-3">
+                <div class="d-flex justify-content-between border-bottom pb-2 mb-3">
+                    <strong class="text-primary">{{ current_user.business_name }}</strong>
+                    <span class="badge bg-primary bg-opacity-10 text-primary">CONFIDENTIAL</span>
+                </div>
+                <div class="row g-2 mb-3 text-center">
+                    <div class="col-4"><div class="p-2 rounded bg-light"><small class="text-muted d-block">Revenue</small><strong class="text-primary">${{ total_rev:,.0f }}</strong></div></div>
+                    <div class="col-4"><div class="p-2 rounded bg-light"><small class="text-muted d-block">Net Profit</small><strong class="text-success">${{ total_prof:,.0f }}</strong></div></div>
+                    <div class="col-4"><div class="p-2 rounded bg-light"><small class="text-muted d-block">Margin</small><strong class="text-info">{{ margin }}%</strong></div></div>
+                </div>
+                <h6 class="fw-bold mb-1" style="font-size:0.85rem;"><i class="fas fa-wand-magic-sparkles text-warning me-1"></i> AI Strategy Summary:</h6>
+                <p class="text-secondary mb-0" style="font-size:0.8rem; line-height:1.5; max-height: 140px; overflow-y: auto;">
+                    {{ ai_summary }}
+                </p>
+            </div>
+            <div class="d-flex justify-content-between text-muted" style="font-size:0.8rem;">
+                <span>Active Orders: {{ orders_count }}</span>
+                <span>Active Customers: {{ customers_count }}</span>
+                <span>Catalog SKUs: {{ products_count }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Generated Reports History Table -->
+<div class="glass-card overflow-hidden">
+    <div class="p-4 border-bottom bg-light bg-opacity-50">
+        <h5 class="fw-bold mb-0"><i class="fas fa-history text-secondary me-2"></i>Generated Reports Archive</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table-premium mb-0">
+            <thead>
+                <tr>
+                    <th>Report Title</th>
+                    <th class="text-center">Format Type</th>
+                    <th>Generated By</th>
+                    <th>Creation Date</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if reports %}
+                    {% for r in reports %}
+                    <tr>
+                        <td class="fw-bold text-primary"><i class="fas fa-file-pdf text-danger me-2"></i>{{ r.title }}</td>
+                        <td class="text-center"><span class="badge bg-danger bg-opacity-10 text-danger px-3 py-1">{{ r.type }}</span></td>
+                        <td class="text-secondary">{{ r.generated_by }}</td>
+                        <td class="text-secondary">{{ r.date | date_format }}</td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{{ url_for('reports.generate_pdf') }}" class="btn btn-sm btn-outline-primary" title="Re-download">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                                <form method="POST" action="{{ url_for('reports.delete_report', id=r.id) }}" onsubmit="return confirm('Delete this report record?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="fas fa-folder-open fs-2 mb-3 d-block"></i>
+                            No reports generated yet. Use the form above to generate your first executive PDF summary!
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

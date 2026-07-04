@@ -1,0 +1,481 @@
+{% extends 'base.html' %}
+{% block title %}Enterprise Dashboard – SmartBiz AI{% endblock %}
+
+{% block content %}
+<!-- Top Toolbar: Date Filtering & File Upload Trigger -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+    <div>
+        <h2 class="fw-bold mb-1">Executive Business Analytics</h2>
+        <p class="text-secondary mb-0" style="font-size:0.9rem;">Real-time financial performance, inventory health, and AI advisory overview.</p>
+    </div>
+    <div class="d-flex flex-wrap align-items-center gap-3">
+        <!-- Date Filter Dropdown -->
+        <div class="d-flex align-items-center gap-2 bg-surface px-3 py-2 rounded-pill border shadow-sm">
+            <i class="fas fa-calendar-alt text-primary"></i>
+            <span class="fw-600 text-secondary" style="font-size:0.85rem;">Period:</span>
+            <select id="dashboardDateFilter" class="form-select form-select-sm border-0 bg-transparent fw-bold text-primary p-0 pe-4" style="width: auto; cursor: pointer; box-shadow: none;">
+                <option value="all">All Time (12 Months)</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last_7_days">Last 7 Days</option>
+                <option value="last_month">Last 30 Days</option>
+                <option value="last_year">Last Year</option>
+            </select>
+        </div>
+        <!-- Reset & Upload Business Files -->
+        <button type="button" class="btn btn-outline-danger fw-600 rounded-pill px-3 py-2 shadow-sm" id="topResetDataBtn" title="Clear Demo Data to 0%">
+            <i class="fas fa-trash-can me-1"></i> Reset to 0%
+        </button>
+        <a href="{{ url_for('main.data_studio') }}" class="btn-premium px-4 py-2 shadow-md text-decoration-none d-inline-flex align-items-center">
+            <i class="fas fa-cloud-arrow-up me-2"></i> Upload Business Data & AI Studio
+        </a>
+    </div>
+</div>
+
+<!-- 12 Animated KPI Cards Grid -->
+<div class="row g-4 mb-5">
+    <!-- 1. Total Revenue -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon"><i class="fas fa-wallet"></i></div>
+                    <span class="trend-badge {{ 'positive' if kpi.growth_pct >= 0 else 'negative' }}">
+                        <i class="fas {{ 'fa-arrow-trend-up' if kpi.growth_pct >= 0 else 'fa-arrow-trend-down' }}"></i> {{ kpi.growth_pct }}%
+                    </span>
+                </div>
+                <div class="kpi-value">{{ kpi.total_revenue | currency }}</div>
+                <div class="kpi-label">Total Revenue</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Gross sales volume</div>
+        </div>
+    </div>
+    <!-- 2. Net Profit -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--success-gradient);"><i class="fas fa-coins"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-check"></i> Healthy</span>
+                </div>
+                <div class="kpi-value text-success">{{ kpi.net_profit | currency }}</div>
+                <div class="kpi-label">Net Profit</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">After cost of goods</div>
+        </div>
+    </div>
+    <!-- 3. Operating Expenses -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--danger-gradient);"><i class="fas fa-receipt"></i></div>
+                    <span class="trend-badge negative"><i class="fas fa-building"></i> Fixed</span>
+                </div>
+                <div class="kpi-value text-danger">{{ kpi.total_expenses | currency }}</div>
+                <div class="kpi-label">Operating Expenses</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Salaries, rent & SaaS</div>
+        </div>
+    </div>
+    <!-- 4. Total Orders -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--secondary-gradient);"><i class="fas fa-shopping-cart"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-bolt"></i> Active</span>
+                </div>
+                <div class="kpi-value">{{ kpi.total_orders }}</div>
+                <div class="kpi-label">Completed Orders</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Verified invoices</div>
+        </div>
+    </div>
+    <!-- 5. Total Customers -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--info);"><i class="fas fa-users"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-user-plus"></i> Growing</span>
+                </div>
+                <div class="kpi-value">{{ kpi.total_customers }}</div>
+                <div class="kpi-label">Customer Accounts</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">VIP & corporate clients</div>
+        </div>
+    </div>
+    <!-- 6. Inventory Valuation -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--warning-gradient);"><i class="fas fa-boxes-stacked"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-warehouse"></i> In Stock</span>
+                </div>
+                <div class="kpi-value">{{ kpi.inventory_value | currency }}</div>
+                <div class="kpi-label">Inventory Valuation</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Total asset stock value</div>
+        </div>
+    </div>
+    <!-- 7. Active Products Count -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--primary);"><i class="fas fa-tags"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-check"></i> Active</span>
+                </div>
+                <div class="kpi-value">{{ kpi.products_count }}</div>
+                <div class="kpi-label">Product SKUs</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Across 5 categories</div>
+        </div>
+    </div>
+    <!-- 8. Average Order Value -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--ai-gradient);"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-arrow-up"></i> AOV</span>
+                </div>
+                <div class="kpi-value">{{ kpi.aov | currency }}</div>
+                <div class="kpi-label">Average Order Value</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Revenue per transaction</div>
+        </div>
+    </div>
+    <!-- 9. Growth Percentage -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--success-gradient);"><i class="fas fa-arrow-trend-up"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-chart-line"></i> YoY</span>
+                </div>
+                <div class="kpi-value text-success">+{{ kpi.growth_pct }}%</div>
+                <div class="kpi-label">Growth Percentage</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">MoM revenue momentum</div>
+        </div>
+    </div>
+    <!-- 10. Today's Revenue -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--secondary-gradient);"><i class="fas fa-calendar-day"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-sun"></i> Today</span>
+                </div>
+                <div class="kpi-value">{{ kpi.today_revenue | currency }}</div>
+                <div class="kpi-label">Today's Revenue</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Sales logged today</div>
+        </div>
+    </div>
+    <!-- 11. Monthly Revenue -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--info);"><i class="fas fa-calendar-alt"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-calendar"></i> Month</span>
+                </div>
+                <div class="kpi-value">{{ kpi.monthly_revenue | currency }}</div>
+                <div class="kpi-label">Monthly Revenue</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Current calendar month</div>
+        </div>
+    </div>
+    <!-- 12. Annual Revenue -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="glass-card kpi-card h-100">
+            <div>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="kpi-icon" style="background: var(--primary-gradient);"><i class="fas fa-calendar-check"></i></div>
+                    <span class="trend-badge positive"><i class="fas fa-trophy"></i> Year</span>
+                </div>
+                <div class="kpi-value">{{ kpi.annual_revenue | currency }}</div>
+                <div class="kpi-label">Annual Revenue</div>
+            </div>
+            <div class="mt-2 pt-2 border-top text-muted" style="font-size:0.75rem;">Year to date sales</div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Interactive Graphs Suite -->
+<div class="row g-4 mb-5">
+    <!-- Row 1: Revenue Trends & Category Sales -->
+    <div class="col-lg-8">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-chart-line text-primary me-2"></i>Monthly Revenue & Profit Trends</h5>
+                <span class="badge bg-primary bg-opacity-10 text-primary">Last 12 Months</span>
+            </div>
+            <div style="height: 330px;">
+                <canvas id="monthlyRevenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-chart-pie text-secondary me-2"></i>Category Sales</h5>
+                <span class="badge bg-secondary bg-opacity-10 text-secondary">Share</span>
+            </div>
+            <div style="height: 330px;">
+                <canvas id="categorySalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 2: Top Products & Revenue vs Expenses -->
+    <div class="col-lg-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-trophy text-warning me-2"></i>Top 5 Selling Products</h5>
+                <span class="badge bg-warning bg-opacity-10 text-warning">By Volume</span>
+            </div>
+            <div style="height: 300px;">
+                <canvas id="topProductsChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-scale-balanced text-danger me-2"></i>Revenue vs Operating Expenses</h5>
+                <span class="badge bg-danger bg-opacity-10 text-danger">Comparison</span>
+            </div>
+            <div style="height: 300px;">
+                <canvas id="revenueVsExpensesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 3: Inventory Status, Expense Analysis, Customer Growth -->
+    <div class="col-md-6 col-xl-4">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-boxes-stacked text-success me-2"></i>Inventory Status</h5>
+                <span class="badge bg-success bg-opacity-10 text-success">Health</span>
+            </div>
+            <div style="height: 260px;">
+                <canvas id="inventoryStatusChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-receipt text-info me-2"></i>Expense Analysis</h5>
+                <span class="badge bg-info bg-opacity-10 text-info">By Category</span>
+            </div>
+            <div style="height: 260px;">
+                <canvas id="expenseAnalysisChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-xl-4">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-globe text-primary me-2"></i>Region-wise Sales</h5>
+                <span class="badge bg-primary bg-opacity-10 text-primary">Global</span>
+            </div>
+            <div style="height: 260px;">
+                <canvas id="regionSalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 4: Customer Segmentation & Net Profit Margin Trend -->
+    <div class="col-lg-5">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-user-tie text-secondary me-2"></i>Customer Segmentation</h5>
+                <span class="badge bg-secondary bg-opacity-10 text-secondary">RFM Tiers</span>
+            </div>
+            <div style="height: 250px;">
+                <canvas id="customerGrowthChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="fas fa-percent text-success me-2"></i>Net Profit Margin (%) Trend</h5>
+                <span class="badge bg-success bg-opacity-10 text-success">Efficiency</span>
+            </div>
+            <div style="height: 250px;">
+                <canvas id="profitMarginChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Google Gemini AI Business Advisor Section -->
+<section id="ai-advisor" class="pt-3 mb-5">
+    <div class="glass-card p-5 position-relative overflow-hidden shadow-xl" style="border: 2px solid rgba(168, 85, 247, 0.4); background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, rgba(236, 72, 153, 0.05) 100%), var(--bg-surface);">
+        <div class="row align-items-center justify-content-between gy-4 mb-4">
+            <div class="col-lg-8">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2 bg-warning bg-opacity-10 text-warning fw-bold" style="font-size:0.8rem;">
+                    <i class="fas fa-wand-magic-sparkles"></i> GOOGLE GEMINI 2.5 PRO ADVISOR
+                </div>
+                <h3 class="fw-bold mb-2">Consult Your AI Business Advisor</h3>
+                <p class="text-secondary mb-0" style="font-size: 1rem; max-width: 680px;">
+                    Our AI advisor evaluates your real-time revenue velocity, product turnover, and customer RFM segmentation to generate a comprehensive 12-point executive strategy report.
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <button id="analyzeBusinessBtn" class="btn-ai fs-5 px-4 py-3 shadow-lg">
+                    <i class="fas fa-wand-magic-sparkles me-2"></i> Analyze My Business
+                </button>
+            </div>
+        </div>
+
+        <!-- Initial Empty State -->
+        <div id="aiEmptyState" class="text-center py-5 my-3 rounded-4" style="background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color);">
+            <div class="kpi-icon mx-auto mb-3" style="width:64px;height:64px;font-size:1.8rem;background:var(--ai-gradient);">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h5 class="fw-bold mb-1">Ready for Intelligent Consultancy</h5>
+            <p class="text-muted mb-0" style="font-size:0.9rem;">Click the button above to generate personalized recommendations for {{ current_user.business_name }}.</p>
+        </div>
+
+        <!-- Animated Shimmer Loading State -->
+        <div id="aiLoadingState" style="display: none;" class="py-5 text-center">
+            <div class="spinner-border text-primary mb-3" style="width: 3.5rem; height: 3.5rem;" role="status"></div>
+            <h5 id="aiProgressText" class="fw-bold text-primary mb-2">Reading financial ledgers & profit margins...</h5>
+            <p class="text-muted" style="font-size: 0.9rem;">Synthesizing 12 strategic dimensions across sales, inventory, and marketing.</p>
+            <div class="row g-4 mt-4 text-start">
+                <div class="col-md-4"><div class="skeleton p-4 rounded-3" style="height: 140px;"></div></div>
+                <div class="col-md-4"><div class="skeleton p-4 rounded-3" style="height: 140px;"></div></div>
+                <div class="col-md-4"><div class="skeleton p-4 rounded-3" style="height: 140px;"></div></div>
+            </div>
+        </div>
+
+        <!-- 12-Point AI Insights Results Grid -->
+        <div id="aiAdvisorResults" style="display: none;" class="mt-4 pt-4 border-top">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0 text-primary"><i class="fas fa-list-check me-2"></i>12-Point Strategic Growth Plan</h4>
+                <span id="aiTimestamp" class="badge bg-secondary bg-opacity-10 text-secondary p-2"></span>
+            </div>
+            <div id="aiInsightsGrid" class="row g-4"></div>
+            <div class="text-center mt-4 pt-3">
+                <a href="{{ url_for('reports.index') }}" class="btn btn-outline-primary fw-600 px-4 py-2 rounded-pill">
+                    <i class="fas fa-file-pdf me-2"></i> Export Full AI Summary as PDF Report
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick File Upload Modal (CSV / Excel) -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content glass-card border-0 shadow-xl">
+            <div class="modal-header border-bottom p-4">
+                <h5 class="modal-title fw-bold"><i class="fas fa-cloud-arrow-up text-primary me-2"></i>Business Data Import & AI Analytics Studio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="fileUploadForm" method="POST" action="{{ url_for('main.upload_file') }}" enctype="multipart/form-data">
+                <div class="modal-body p-4">
+                    <!-- Status Banner & Reset Button -->
+                    <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between p-3 mb-4 rounded-3 gap-2" style="background: rgba(79, 70, 229, 0.08); border: 1px solid rgba(79, 70, 229, 0.2);">
+                        <div>
+                            <span id="dataLoadedStatus" class="fw-bold text-primary d-block" style="font-size:0.9rem;"><i class="fas fa-database me-2"></i>Current Mode: Demo Sample Data Active</span>
+                            <small class="text-secondary" style="font-size:0.75rem;">Clear demo data before uploading your own files to start at 0%.</small>
+                        </div>
+                        <button type="button" id="resetDataToZeroBtn" class="btn btn-sm btn-outline-danger rounded-pill fw-600 px-3 flex-shrink-0">
+                            <i class="fas fa-trash-can me-1"></i> Reset to 0% (Clear Demo Data)
+                        </button>
+                    </div>
+
+                    <p class="text-secondary mb-4" style="font-size:0.9rem;">
+                        Upload your business spreadsheets. Our backend Pandas engine automatically detects product SKUs, inventory stock levels, or sales invoices, imports them into SQLite, and immediately synthesizes AI analytics predictions!
+                    </p>
+                    
+                    <!-- Drag & Drop Zone -->
+                    <div id="fileDropZone" class="p-5 text-center rounded-4 border border-2 border-dashed mb-4" style="border-color: var(--primary) !important; cursor: pointer; background: rgba(79, 70, 229, 0.03); transition: var(--transition-fast);">
+                        <i class="fas fa-file-excel text-success display-4 mb-3"></i>
+                        <h5 class="fw-bold mb-1">Drag & Drop Your Business Spreadsheet Here</h5>
+                        <p class="text-muted mb-3" style="font-size:0.85rem;">Supports <code>.csv</code>, <code>.xls</code>, <code>.xlsx</code>, <code>.pdf</code>, <code>.txt</code>, and <code>.json</code> files up to 16MB</p>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-600">Browse Files</button>
+                        <input type="file" id="uploadFileInput" name="file" class="d-none" accept=".csv, .xls, .xlsx, .pdf, .txt, .json" required>
+                    </div>
+
+                    <div id="selectedFileName" class="fw-bold text-primary mb-3 text-center" style="font-size:0.9rem;"></div>
+
+                    <!-- Animated Upload & Processing Progress Bar -->
+                    <div id="uploadProgressSection" style="display: none;" class="my-4">
+                        <div class="d-flex justify-content-between text-secondary mb-1" style="font-size: 0.85rem;">
+                            <span id="uploadProgressLabel" class="fw-bold"><i class="fas fa-spinner fa-spin me-2 text-primary"></i>Ingesting & Parsing Spreadsheet via Pandas...</span>
+                            <span id="uploadProgressPct" class="fw-bold text-primary">0%</span>
+                        </div>
+                        <div class="progress" style="height: 12px; border-radius: 12px; background: rgba(0,0,0,0.05); overflow: hidden;">
+                            <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%; background: var(--primary-gradient);"></div>
+                        </div>
+                    </div>
+
+                    <!-- Client-Side Table Preview -->
+                    <div id="uploadPreviewContainer" style="display: none;" class="mt-3">
+                        <h6 class="fw-bold mb-2 text-secondary" style="font-size:0.85rem;"><i class="fas fa-table me-1"></i> File Preview (First 5 Rows):</h6>
+                        <div class="table-responsive rounded border bg-white" style="max-height: 200px;">
+                            <table id="uploadPreviewTable" class="table table-sm table-striped table-hover mb-0" style="font-size:0.8rem;"></table>
+                        </div>
+                    </div>
+
+                    <!-- AI Prediction & Analytics Studio Showcase Container -->
+                    <div id="uploadAiPredictionSection" style="display: none;" class="mt-4 p-4 rounded-4" style="background: radial-gradient(circle at top left, rgba(168, 85, 247, 0.12), rgba(79, 70, 229, 0.05)), var(--bg-surface); border: 2px solid rgba(168, 85, 247, 0.4);">
+                        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                            <h6 class="fw-bold mb-0 text-primary"><i class="fas fa-wand-magic-sparkles me-2 text-warning"></i>Instant AI Analytics & Growth Predictions</h6>
+                            <span class="badge bg-success bg-opacity-10 text-success">Generated from Uploaded File</span>
+                        </div>
+                        <div id="aiPredictionSummary" class="fw-bold mb-2 text-dark" style="font-size: 0.95rem;"></div>
+                        <div class="row g-3 my-2">
+                            <div class="col-md-6">
+                                <div class="p-3 rounded-3 bg-white bg-opacity-75 border">
+                                    <div class="text-muted" style="font-size:0.75rem;"><i class="fas fa-arrow-trend-up text-success me-1"></i> FORECASTED REVENUE GROWTH</div>
+                                    <div id="aiPredictedGrowth" class="fw-bold fs-6 text-success mt-1"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded-3 bg-white bg-opacity-75 border">
+                                    <div class="text-muted" style="font-size:0.75rem;"><i class="fas fa-star text-warning me-1"></i> TOP REVENUE OPPORTUNITY</div>
+                                    <div id="aiTopOpportunity" class="fw-bold fs-6 text-dark mt-1" style="font-size:0.85rem !important;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p id="aiKeyPrediction" class="text-secondary mb-3" style="font-size:0.85rem;"></p>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">Close & View Live Dashboard</button>
+                            <a href="/dashboard#ai-advisor" class="btn btn-sm btn-primary rounded-pill px-3 fw-600"><i class="fas fa-chart-line me-1"></i> Launch Full 12-Point AI Advisor</a>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded bg-primary bg-opacity-10 mt-3 border border-primary border-opacity-25 text-center">
+                        <span class="fw-bold text-primary d-block mb-1"><i class="fas fa-sparkles me-1"></i> Want Advanced Table Previews & Deep PDF/Text Analysis?</span>
+                        <a href="{{ url_for('main.data_studio') }}" class="btn btn-sm btn-primary rounded-pill px-4 shadow-sm">Launch Dedicated Business Data Studio ➔</a>
+                    </div>
+                    <div class="p-3 rounded bg-light mt-3 d-flex align-items-center justify-content-between">
+                        <span class="text-muted" style="font-size:0.8rem;"><i class="fas fa-info-circle me-1 text-primary"></i> Need a test file? Download our sample datasets:</span>
+                        <div class="d-flex gap-2">
+                            <a href="/uploads/sample_products_import.csv" download class="btn btn-xs btn-outline-secondary" style="font-size:0.75rem;"><i class="fas fa-download me-1"></i>Sample Products CSV</a>
+                            <a href="/uploads/sample_sales_import.xlsx" download class="btn btn-xs btn-outline-secondary" style="font-size:0.75rem;"><i class="fas fa-download me-1"></i>Sample Sales Excel</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top p-4">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" id="uploadSubmitBtn" class="btn-premium px-4" disabled>
+                        <i class="fas fa-database me-2"></i> Confirm & Import Records
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

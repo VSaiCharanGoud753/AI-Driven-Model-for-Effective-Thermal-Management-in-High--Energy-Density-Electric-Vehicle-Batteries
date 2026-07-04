@@ -1,0 +1,15 @@
+Flask>=3.0.0
+Flask-Login>=0.6.3
+Flask-Session>=0.8.0
+Flask-SQLAlchemy>=3.1.1
+Flask-WTF>=1.2.1
+Werkzeug>=3.0.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+google-genai>=0.1.0
+google-generativeai>=0.8.0
+reportlab>=4.0.0
+fpdf2>=2.7.0
+pypdf>=3.0.0
+pdfplumber>=0.10.0
+python-dotenv>=1.0.0

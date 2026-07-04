@@ -1,0 +1,6 @@
+Invoice,Customer Email,SKU,Quantity,Unit Price,Region,Date
+INV-2026-9001,sarah.connor@cyberdyne.com,AUD-WNCH-001,2,249.99,North America,2026-06-15
+INV-2026-9002,elon@xtech.com,ELE-4KM-003,5,399.99,North America,2026-06-18
+INV-2026-9003,amara.okafor@afritech.org,SOF-ECL-005,1,1200.0,Africa,2026-06-20
+INV-2026-9004,kenji.sato@tokyo-labs.jp,FUR-EMOC-002,10,320.0,Asia,2026-06-25
+INV-2026-9005,elena.rodriguez@madrid-design.es,ELE-SFW-004,4,179.99,Europe,2026-06-28

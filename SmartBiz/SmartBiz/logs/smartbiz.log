@@ -1,0 +1,234 @@
+2026-07-04 11:44:37,874 DEBUG smartbiz: process_file_upload called: path=uploads\1783121982_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 11:44:38,031 ERROR smartbiz: Exception while processing uploaded file uploads\1783121982_Sample_-_Superstore.csv
+Traceback (most recent call last):
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: customers
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\Chara\SmartBiz\SmartBiz\utils.py", line 499, in process_file_upload
+    default_cust = Customer.query.first()
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\sql\elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Chara\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: customers
+[SQL: SELECT customers.id AS customers_id, customers.name AS customers_name, customers.email AS customers_email, customers.phone AS customers_phone, customers.company AS customers_company, customers.segment AS customers_segment, customers.lifetime_value AS customers_lifetime_value, customers.purchase_frequency AS customers_purchase_frequency, customers.created_at AS customers_created_at 
+FROM customers
+ LIMIT ? OFFSET ?]
+[parameters: (1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-07-04 11:44:49,552 DEBUG smartbiz: process_file_upload called: path=uploads\1783121982_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 11:46:28,942 DEBUG smartbiz: process_file_upload called: path=uploads\1783121982_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:02:28,712 DEBUG smartbiz: preview_upload_file saved temporary preview file: uploads\prev_1783126948_smartbiz_sales_report.csv
+2026-07-04 12:02:33,627 DEBUG smartbiz: upload_file saved file: uploads\1783126953_smartbiz_sales_report.csv (ext=csv) target_module=auto ajax=True
+2026-07-04 12:02:33,627 DEBUG smartbiz: process_file_upload called: path=uploads\1783126953_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:02:33,687 DEBUG smartbiz: process_file_upload result: success=True imported=0 revenue=0.0
+2026-07-04 12:10:45,213 DEBUG smartbiz: preview_upload_file saved temporary preview file: uploads\prev_1783127445_smartbiz_sales_report.csv
+2026-07-04 12:10:50,371 DEBUG smartbiz: upload_file saved file: uploads\1783127450_smartbiz_sales_report.csv (ext=csv) target_module=auto ajax=True
+2026-07-04 12:10:50,372 DEBUG smartbiz: process_file_upload called: path=uploads\1783127450_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:10:50,384 DEBUG smartbiz: process_file_upload result: success=True imported=0 revenue=0.0
+2026-07-04 12:10:53,546 DEBUG smartbiz: upload_file saved file: uploads\1783127453_smartbiz_sales_report.csv (ext=csv) target_module=auto ajax=True
+2026-07-04 12:10:53,547 DEBUG smartbiz: process_file_upload called: path=uploads\1783127453_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:10:53,558 DEBUG smartbiz: process_file_upload result: success=True imported=0 revenue=0.0
+2026-07-04 12:13:20,365 DEBUG smartbiz: preview_upload_file saved temporary preview file: uploads\prev_1783127600_smartbiz_sales_report.csv
+2026-07-04 12:13:23,354 DEBUG smartbiz: upload_file saved file: uploads\1783127603_smartbiz_sales_report.csv (ext=csv) target_module=auto ajax=True
+2026-07-04 12:13:23,355 DEBUG smartbiz: process_file_upload called: path=uploads\1783127603_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:13:23,363 DEBUG smartbiz: process_file_upload result: success=True imported=0 revenue=0.0
+2026-07-04 12:16:17,386 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121819_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:17,408 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121830_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:17,419 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121834_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:17,431 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121835_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:17,442 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121837_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:17,450 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121860_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:17,464 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121870_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:17,473 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121982_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:23,447 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121989_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:27,551 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121999_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:31,579 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122160_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:35,615 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122486_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:35,629 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122643_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:35,641 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122843_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:39,664 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122858_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:43,774 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122867_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:47,698 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122878_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:51,690 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783123390_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:51,702 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124140_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:51,712 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124330_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:51,723 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783126953_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:51,734 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783127603_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:53,038 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121819_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:53,060 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121830_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:53,071 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121834_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:53,080 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121835_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:53,091 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121837_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:53,101 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121860_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:53,110 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121870_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:16:53,122 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121989_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:16:57,100 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121999_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:00,968 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122160_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:04,903 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122486_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:04,913 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122643_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:04,924 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122843_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:08,870 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122858_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:12,984 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122867_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:17,044 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122878_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:21,184 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783123390_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:21,195 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124140_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:21,210 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124330_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:21,226 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783126953_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:21,241 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783127603_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:22,575 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121819_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:22,606 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121830_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:22,617 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121834_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:22,627 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121835_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:22,639 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121837_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:22,649 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121860_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:22,659 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121870_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:22,671 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121989_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:26,797 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121999_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:30,776 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122160_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:34,792 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122486_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:34,805 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122643_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:34,817 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122843_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:39,281 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122858_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:43,728 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122867_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:48,217 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122878_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:17:52,547 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783123390_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:52,557 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124140_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:52,569 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124330_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:52,582 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783126953_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:17:52,593 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783127603_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:19:12,837 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783121982_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:19:43,361 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783121982_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:21:52,715 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121819_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:21:52,751 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121830_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:21:52,758 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121834_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:21:52,763 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121835_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:21:52,768 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121837_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:21:52,772 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121860_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:21:52,778 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121870_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:21:52,868 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783121989_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:22:04,846 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783121999_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:22:16,076 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122160_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:22:27,522 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122486_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:22:27,526 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122643_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:22:27,615 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122843_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:22:38,863 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122858_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:22:50,043 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122867_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:23:01,210 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122878_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:23:12,351 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783123390_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:12,355 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124140_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:12,361 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124330_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:12,367 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783126953_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:12,372 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783127603_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:12,418 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783121982_Sample_-_Superstore.csv type=csv target=auto
+2026-07-04 12:23:18,295 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121819_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:18,312 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121830_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:18,318 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121834_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:18,330 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121835_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:18,344 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121837_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:18,358 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121860_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:18,369 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783121870_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:18,517 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783121999_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:23:30,112 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122160_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:23:41,514 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122486_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:41,519 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783122643_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:23:41,616 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122843_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:23:53,158 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122858_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:24:05,393 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122867_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:24:17,059 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\trans_1783122878_Sample_-_Superstore.csv type=csv target=sales
+2026-07-04 12:24:28,308 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783123390_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:24:28,312 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124140_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:24:28,318 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783124330_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:24:28,323 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783126953_smartbiz_sales_report.csv type=csv target=auto
+2026-07-04 12:24:28,327 DEBUG smartbiz: process_file_upload called: path=C:\Users\Chara\SmartBiz\SmartBiz\uploads\1783127603_smartbiz_sales_report.csv type=csv target=auto
