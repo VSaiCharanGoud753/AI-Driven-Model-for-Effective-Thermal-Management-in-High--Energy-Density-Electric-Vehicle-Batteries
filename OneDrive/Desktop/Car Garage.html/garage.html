@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+/* *{
+    background-color: #373535;
+    color: #222;
+} */
+.header{
+    background-image: url("https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+    background-color: rgb(130, 144, 75);
+    border-radius: 3px solid rgb(138, 182, 91);
+    color: beige;
+    padding: 30px;
+    display: flex;
+  
+    
+}
+.a{
+    display: flex;
+    gap: 30px;
+    margin-left: auto;
+    padding: 10px;
+}
+.aside{
+    width: 250px;
+    position:fixed;
+    border-radius: 10px;
+    background-color: rgb(202, 202, 205);
+    padding: 20px;
+    column-gap: 20px;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+        url("https://images.pexels.com/photos/17429097/pexels-photo-17429097/free-photo-of-a-car-on-a-tow-truck.jpeg?h=1000&w=1500&fit=crop");
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.aside h2 {
+    color: #ffd166;
+}
+.photo{
+    display: block;
+    width: 900px;
+    max-width: calc(100% - 40px);
+    height: 350px;
+    object-fit: cover;
+    object-position: center;
+    margin: 20px auto;
+    box-sizing: border-box;
+    transition-duration: 2s;
+}
+.b{
+    color: aqua;
+}
+.services {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    cursor: pointer;
+}
+
+.service-box {
+    width: 220px;
+    padding: 25px;
+    border: 2px solid rgb(22, 21, 21);
+    border-radius: 10px;
+    text-align: center;
+    
+    transition: 0.3s;
+}
+
+.service-box:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+h1{
+    text-align: center;
+}
+.login{
+    border-radius: 10px;
+    border:3px solid black;
+    padding: 30px;
+    text-align: center;
+    margin: 30px 20px;
+    cursor:text;
+}
+.footer{
+    background-color: greenyellow;
+    color: white;
+    border-radius: 20px;
+    border: 2px solid greenyellow;
+    text-align: center;
+    margin: 30px 20px;
+}
+.data{
+   width: auto;
+    margin: 30px 20px;
+    padding: 30px;
+    text-align: center;
+    border-radius: 20px;
+    border: 2px solid rgb(179, 125, 125);
+    padding: 20px;
+    animation-name: colorchange;
+    animation-duration: 20s;
+    animation-iteration-count: infinite;
+    font-size: 30px;
+    font-style:italic;
+    background: linear-gradient(blue,red,pink,purple);
+}
+
+@keyframes colorchange{
+   from {
+    color: red;
+    background-color: whitesmoke;
+   }
+   to{
+    color:#ffd166;
+    background-color: aquamarine;
+   }
+
+  
+    
+}
+</style>
+<body>
+    <header class="header">
+    <h1>Auto Garage Repairs</h1>
+    <div class="a">
+<a class="a" href="#">HOME</a>
+<a class="a" href="#">SERVICES</a>
+<a class="a" href="#">CONTACT</a>
+<a class="a" href="#">HELP</a>
+<a class="a" href="login">LOGIN</a>
+    </div>
+    </header>
+<side class="aside">
+    <form>
+        <label><h2>TOW YOUR CAR</h2></label><BR><BR>
+        <label>NAME:-</label><br>
+        <input type="text"><br><br>
+        <label>SELECT THE AREA:-</label>
+    <select>
+        <option>SELECT THE LOCATION</option>
+        <option>HYDERABAD</option>
+        <option>BENGALURU</option>
+        <option>CHENNAI</option>
+    </select><br><br>
+    <label>MOBILENUMBER:-</label>
+    <input type="digit"><BR><BR>
+    <button>SUBMIT</button>
+    </form>
+</side>
+<video class="photo" autoplay muted loop playsinline preload="metadata">
+    <source class="video" src="https://videos.pexels.com/video-files/33129205/14120113_1920_1080_25fps.mp4" type="video/mp4">
+</video>
+<h1 class="k">OUR SERVICES</h1>
+   <div class="services">
+
+    <div class="service-box">
+        <h3>Engine Repair</h3>
+        <p>Complete engine inspection and repair.</p>
+    </div>
+
+    <div class="service-box">
+        <h3>Brake Service</h3>
+        <p>Brake inspection and replacement.</p>
+    </div>
+
+    <div class="service-box">
+        <h3>AC Service</h3>
+        <p>Car AC inspection and maintenance.</p>
+    </div>
+
+    <div class="service-box">
+        <h3>Oil Change</h3>
+        <p>Quick and professional oil replacement.</p>
+    </div>
+
+</div>
+<div class="data">
+    <p>• At Auto Garage Repairs, we keep your vehicle running like new with precision diagnostics and expert repairs. Our certified mechanics handle everything from routine oil changes to complex engine overhauls with complete transparency. Experience fast service, fair pricing, and a commitment to keeping you safe on the road.</p>
+</div>
+<form class="login">
+<h1>LOGIN</h1>
+<login>
+    <label>Gmail:-</label>
+    <input type="Gmail" id="text" name="text"><br><br>
+    <label>Password:-</label>
+    <input type="password" id="pwd" name="pwd"><br><br>
+    <button>Submit</button>
+</login>
+</form>
+<footer class="footer">
+<p>@THIS PAGE COPYWRITES BELONGS TO AUTO GARAGE REPAIRS</p>
+<h3>VSAICHARANGOUD</h3>
+<P>@AUTO GARAGE REPAIRS</P>
+
+
+</footer>
+</main>
+</body>
+</html>
